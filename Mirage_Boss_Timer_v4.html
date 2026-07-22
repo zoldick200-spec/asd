@@ -30,8 +30,12 @@ function editBoss(i){
 function del(i){bosses.splice(i,1);save();render();}
 function update(){let now=new Date();
 let rows=[...document.querySelectorAll('#tb tr')];
-rows.forEach(r=>{let ts=r.dataset.times.split(',');let n=null;for(let tm of ts){let[h,m]=tm.split(':');let d=new Date();d.setHours(+h,+m,0,0);if(d>now){n=d;break}}if(!n){let[h,m]=ts[0].split(':');n=new Date();n.setDate(n.getDate()+1);n.setHours(+h,+m,0,0)}let diff=n-now,H=Math.floor(diff/36e5),M=Math.floor(diff%36e5/6e4),S=Math.floor(diff%6e4/1e3);r.querySelector('.next').textContent=n.toLocaleTimeString();r.querySelector('.cd').textContent=`${String(H).padStart(2,'0')}:${String(M).padStart(2,'0')}:${String(S).padStart(2,'0')}`;
-r.dataset.diff=diff;});
+rows.forEach(r=>{let ts=r.dataset.times.split(',');let n=null;for(let tm of ts){let[h,m]=tm.split(':');let d=new Date();d.setHours(+h,+m,0,0);if(d>now){n=d;break}}if(!n){let[h,m]=ts[0].split(':');n=new Date();n.setDate(n.getDate()+1);n.setHours(+h,+m,0,0)}let diff=n-now,H=Math.floor(diff/36e5),M=Math.floor(diff%36e5/6e4),S=Math.floor(diff%6e4/1e3);r.querySelector('.next').textContent = n.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+});
 rows.sort((a,b)=>a.dataset.diff-b.dataset.diff);
 rows.forEach(r=>tb.appendChild(r));}
 render();setInterval(update,1000);
